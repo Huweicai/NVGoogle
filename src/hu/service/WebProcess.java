@@ -1,6 +1,7 @@
 package hu.service;
 
 import java.io.BufferedReader;
+import java.util.regex.*;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.URL;
@@ -17,9 +18,10 @@ public class WebProcess implements WebProcessSerivce{
 	@Override
 	public String getHtmlByUrl(String url) {
 		URLConnection con;
-		String result="";
+		//StringBuiller is more suit for dynamic string
+		StringBuilder result=new StringBuilder();
 		try {
-			//打开连接
+			//open link
 			con = new URL(url).openConnection();
 			con.setRequestProperty("User-Agent", "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:53.0) Gecko/20100101 Firefox/53.0");
 			con.setConnectTimeout(60000);
@@ -29,7 +31,7 @@ public class WebProcess implements WebProcessSerivce{
 			String temp=null;
 			//保存数据流
 			while((temp=in.readLine())!=null) {
-				result+=temp;
+				result.append(temp);
 			}
 			//转码
 			in.close();
@@ -37,25 +39,31 @@ public class WebProcess implements WebProcessSerivce{
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		return result;
+		return result.toString();
 	}
 	
 	/*
-	 * this function can change 
+	 * search in the string "origin" and replace all target with replacemet
 	 */
 	@Override
-	public String changeLinkToLocal(String html) {
+	public String replaceString(String origin, String target, String replacement) {
+		Pattern pt=Pattern.compile(target);
+		Matcher mt=pt.matcher(origin);
+		mt.replaceAll(replacement);
+		return null;
+	}
+
+	@Override
+	public String getResultForGoogle(String url) {
 		// TODO Auto-generated method stub
 		return null;
 	}
-	
-	/*
-	 * this function can replace All 
-	 */
+
 	@Override
-	public String replaceString(String origin, String result) {
-		// TODO Auto-generated method stub
-		return null;
+	public String getResultForBaidu(String url) {
+		String html=getHtmlByUrl(url);
+		//replace URL to my local URL
+		replaceString(html, "href=\\\\\"/s", "href=\\\\\"/NVGoogle/baidu/s");
+		return html;
 	}
-	
 }
