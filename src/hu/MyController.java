@@ -1,6 +1,10 @@
 package hu;
 
 import java.io.*;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Map.Entry;
+
 import javax.servlet.http.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -15,19 +19,23 @@ public class MyController {
 	hu.service.WebProcessSerivce webs;
 	//Target URL
 	//String url="https://www.google.com/search?q=123&ie=utf-8&oe=utf-8&hl=zh-cn";
-	String url="https://www.baidu.com/s?wd=1&ie=utf-8";
+	StringBuilder url=new StringBuilder("https://www.baidu.com/s");
 	                                                   
-	@RequestMapping(value="/baidu/{para}")
-	public void getURLContent(@PathVariable String para,HttpServletRequest request,HttpServletResponse response) throws  IOException {
+	@RequestMapping(value="/baidu")
+	public void getURLContent(HttpServletRequest request,HttpServletResponse response) throws  IOException {
+		
+		Map<String, String[]> requestParam=request.getParameterMap();
+		for(Entry<String, String[]>  entry: requestParam.entrySet()) {
+			//though this type is String[],but apearently it is just only a String
+			String[] value=entry.getValue();
+			
+		}
+		System.out.println("why it doesn't show anything ??");
 		//防止乱码问题
 		response.setContentType("text/html;charset=UTF-8");
-		response.setCharacterEncoding("UTF-8"); 
-		
-		if(para!=null) {
-			url="https://www.baidu.com/s?wd=1&ie=utf-8";
-		}
+		response.setCharacterEncoding("UTF-8");
 		PrintWriter writer=response.getWriter();
-		String html=webs.getResultForBaidu(url);
+		String html=webs.getResultForBaidu(request,url.toString());
 		writer.write(html);
 		writer.close();
 	}

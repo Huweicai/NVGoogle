@@ -2,6 +2,9 @@ package hu.service;
 
 import java.io.BufferedReader;
 import java.util.regex.*;
+
+import javax.servlet.http.HttpServletRequest;
+
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.URL;
@@ -33,10 +36,8 @@ public class WebProcess implements WebProcessSerivce{
 			while((temp=in.readLine())!=null) {
 				result.append(temp);
 			}
-			//转码
 			in.close();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return result.toString();
@@ -49,8 +50,9 @@ public class WebProcess implements WebProcessSerivce{
 	public String replaceString(String origin, String target, String replacement) {
 		Pattern pt=Pattern.compile(target);
 		Matcher mt=pt.matcher(origin);
-		mt.replaceAll(replacement);
-		return null;
+		//it needs to get 
+		origin=mt.replaceAll(replacement);
+		return origin;
 	}
 
 	@Override
@@ -60,10 +62,41 @@ public class WebProcess implements WebProcessSerivce{
 	}
 
 	@Override
-	public String getResultForBaidu(String url) {
+	public String addBaiduRequest(HttpServletRequest request, String url) {
+		
+		return null;
+	}
+	
+	@Override
+	public String getResultForBaidu(HttpServletRequest request,String url) {
 		String html=getHtmlByUrl(url);
 		//replace URL to my local URL
-		replaceString(html, "href=\\\\\"/s", "href=\\\\\"/NVGoogle/baidu/s");
+		html=replaceString(html, "href=\"\\/s\\?", "href=\"/NVGoogle/baidu?");
 		return html;
 	}
+	
+	
+	
+	
+	
+	
+	
+	public static void main(String[] args) {
+		String url="https://www.baidu.com/s?wd=1&ie=utf-8";
+		WebProcess webs=new WebProcess();
+//		String html=webs.getHtmlByUrl(url);
+		String html="href=\"/s?wd=1&pn=10&oq=1&ie=utf-8&";
+		html=webs.replaceStringTest(html, "href=\"\\/s\\?", "我去");
+		System.out.println("?");
+	}
+	
+	public String replaceStringTest(String origin, String target, String replacement) {
+		Pattern pt=Pattern.compile(target);
+		Matcher mt=pt.matcher(origin);
+		System.out.println(mt.find()?"Find":"NoFind");
+		origin=mt.replaceAll(replacement);
+		System.out.println(origin);
+		return null;
+	}
+
 }
