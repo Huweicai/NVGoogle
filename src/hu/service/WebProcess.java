@@ -20,6 +20,8 @@ public class WebProcess implements WebProcessSerivce{
 	 */
 	@Override
 	public String getHtmlByUrl(String url) {
+		//log : output the url
+		System.out.println("URL : "+url);
 		URLConnection con;
 		//StringBuiller is more suit for dynamic string
 		StringBuilder result=new StringBuilder();
@@ -71,7 +73,9 @@ public class WebProcess implements WebProcessSerivce{
 	public String getResultForBaidu(HttpServletRequest request,String url) {
 		String html=getHtmlByUrl(url);
 		//replace URL to my local URL
-		html=replaceString(html, "href=\"\\/s\\?", "href=\"/NVGoogle/baidu?");
+//		html=replaceString(html, "href=\"\\/s\\?", "href=\"/NVGoogle/baidu?");
+		html=replaceString(html, "\"/s\\?", "\"/NVGoogle/baidu?");
+		html=replaceString(html, "action=\"\\/s", "action=\"/NVGoogle/baidu");
 		return html;
 	}
 	
@@ -86,7 +90,7 @@ public class WebProcess implements WebProcessSerivce{
 		WebProcess webs=new WebProcess();
 //		String html=webs.getHtmlByUrl(url);
 		String html="href=\"/s?wd=1&pn=10&oq=1&ie=utf-8&";
-		html=webs.replaceStringTest(html, "href=\"\\/s\\?", "我去");
+		html=webs.replaceStringTest(html, "\"/s\\?", "\"/NVGoogle/baidu?");
 		System.out.println("?");
 	}
 	

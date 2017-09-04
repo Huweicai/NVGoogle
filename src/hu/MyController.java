@@ -19,16 +19,19 @@ public class MyController {
 	hu.service.WebProcessSerivce webs;
 	//Target URL
 	//String url="https://www.google.com/search?q=123&ie=utf-8&oe=utf-8&hl=zh-cn";
-	StringBuilder url=new StringBuilder("https://www.baidu.com/s");
+	StringBuilder url=new StringBuilder("https://www.baidu.com/baidu?wd=123&oe=utf-8");
 	                                                   
 	@RequestMapping(value="/baidu")
 	public void getURLContent(HttpServletRequest request,HttpServletResponse response) throws  IOException {
-		
+		//put Parameters into URL 
 		Map<String, String[]> requestParam=request.getParameterMap();
+		if(requestParam.get("wd")!=null) {
+			url=new StringBuilder("https://www.baidu.com/baidu?oe=utf-8");
+		}
 		for(Entry<String, String[]>  entry: requestParam.entrySet()) {
 			//though this type is String[],but apearently it is just only a String
 			String[] value=entry.getValue();
-			
+			url.append(entry.getKey()+"="+value[0]+"&");
 		}
 		System.out.println("why it doesn't show anything ??");
 		//防止乱码问题
