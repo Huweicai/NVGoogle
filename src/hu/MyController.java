@@ -26,24 +26,30 @@ public class MyController {
 		//put Parameters into URL 
 		Map<String, String[]> requestParam=request.getParameterMap();
 		if(requestParam.get("wd")!=null) {
-			url=new StringBuilder("https://www.baidu.com/baidu?oe=utf-8");
+			url=new StringBuilder("https://www.baidu.com/baidu?wd="+requestParam.get("wd")[0]+"&oe=utf-8");
+			if(requestParam.get("pn")!=null) {
+				url.append("&pn="+requestParam.get("pn")[0]);
+			}
 		}
-		for(Entry<String, String[]>  entry: requestParam.entrySet()) {
-			//though this type is String[],but apearently it is just only a String
-			String[] value=entry.getValue();
-			url.append(entry.getKey()+"="+value[0]+"&");
-		}
-		System.out.println("why it doesn't show anything ??");
+//		for(Entry<String, String[]>  entry: requestParam.entrySet()) {
+//			//though this type is String[],but apearently it is just only a String
+//			String[] value=entry.getValue();
+//			url.append(entry.getKey()+"="+value[0]+"&");
+//		}
+		
+		//encoding 
+		String finalUrl=url.toString();
+		finalUrl = new String(finalUrl.getBytes("ISO-8859-1"), "UTF-8");
 		//防止乱码问题
 		response.setContentType("text/html;charset=UTF-8");
 		response.setCharacterEncoding("UTF-8");
 		PrintWriter writer=response.getWriter();
-		String html=webs.getResultForBaidu(request,url.toString());
+		String html=webs.getResultForBaidu(request,finalUrl);
 		writer.write(html);
 		writer.close();
 	}
 	
-	/*
+	/* 
 	 * Hello World for test
 	 */
 	@RequestMapping("/hello")

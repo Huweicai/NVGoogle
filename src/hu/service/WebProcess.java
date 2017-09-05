@@ -27,8 +27,10 @@ public class WebProcess implements WebProcessSerivce{
 		StringBuilder result=new StringBuilder();
 		try {
 			//open link
+			//the location in 302 is also useless
 			con = new URL(url).openConnection();
 			con.setRequestProperty("User-Agent", "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:53.0) Gecko/20100101 Firefox/53.0");
+			con.setRequestProperty("refer", "https://www.baidu.com/s");
 			con.setConnectTimeout(60000);
 			con.setReadTimeout(60000);
 			//获取数据流
