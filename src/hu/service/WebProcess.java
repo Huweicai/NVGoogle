@@ -7,6 +7,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLConnection;
 
@@ -22,13 +23,14 @@ public class WebProcess implements WebProcessSerivce{
 	public String getHtmlByUrl(String url) {
 		//log : output the url
 		System.out.println("URL : "+url);
-		URLConnection con;
+		url.replace(' ','+');
+		HttpURLConnection con;
 		//StringBuiller is more suit for dynamic string
 		StringBuilder result=new StringBuilder();
 		try {
 			//open link
 			//the location in 302 is also useless
-			con = new URL(url).openConnection();
+			con = (HttpURLConnection) new URL(url).openConnection();
 			con.setRequestProperty("User-Agent", "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:53.0) Gecko/20100101 Firefox/53.0");
 			con.setRequestProperty("refer", "https://www.baidu.com/s");
 			con.setConnectTimeout(60000);
@@ -41,6 +43,7 @@ public class WebProcess implements WebProcessSerivce{
 				result.append(temp);
 			}
 			in.close();
+			con.disconnect();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -59,25 +62,33 @@ public class WebProcess implements WebProcessSerivce{
 		return origin;
 	}
 
-	@Override
-	public String getResultForGoogle(String url) {
-		// TODO Auto-generated method stub
-		return null;
-	}
 
-	@Override
-	public String addBaiduRequest(HttpServletRequest request, String url) {
-		
-		return null;
-	}
 	
 	@Override
-	public String getResultForBaidu(HttpServletRequest request,String url) {
+	public String getResultForBaidu(String url) {
 		String html=getHtmlByUrl(url);
 		//replace URL to my local URL
 //		html=replaceString(html, "href=\"\\/s\\?", "href=\"/NVGoogle/baidu?");
 		html=replaceString(html, "\"/s\\?", "\"/NVGoogle/baidu?");
+		//search box
 		html=replaceString(html, "action=\"\\/s", "action=\"/NVGoogle/baidu");
+		//logo
+		html=replaceString(html, "//www.baidu.com/img/baidu_jgylogo3.gif", "/NVGoogle/Resources/google.png");
+		//wd
+		html=replaceString(html, "百度", "GOOGLE");
+		
+		return html;
+	}
+	@Override
+	public String getResultForGoogle(String url) {
+		String html=getHtmlByUrl(url);
+		//replace URL to my local URL
+		//replace link
+		html=replaceString(html, "\"/search\\?", "\"/NVGoogle/google?");
+		//search box
+		html=replaceString(html, "action=\"\\/search", "action=\"/NVGoogle/google");
+		//logo
+		html=replaceString(html,"/images/branding/googlelogo/2x/googlelogo_color_120x44dp.png","/NVGoogle/Resources/google.png");
 		return html;
 	}
 	
@@ -91,8 +102,8 @@ public class WebProcess implements WebProcessSerivce{
 		String url="https://www.baidu.com/s?wd=1&ie=utf-8";
 		WebProcess webs=new WebProcess();
 //		String html=webs.getHtmlByUrl(url);
-		String html="href=\"/s?wd=1&pn=10&oq=1&ie=utf-8&";
-		html=webs.replaceStringTest(html, "\"/s\\?", "\"/NVGoogle/baidu?");
+		String html="src=\"/images/branding/googlelogo/2x/googlelogo_color_120x44dp.png\"";
+		html=webs.replaceStringTest(html, "/images/branding/googlelogo/2x/googlelogo_color_120x44dp.png", "哈哈哈");
 		System.out.println("?");
 	}
 	
