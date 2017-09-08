@@ -23,7 +23,7 @@ public class WebProcess implements WebProcessSerivce{
 	public String getHtmlByUrl(String url) {
 		//log : output the url
 		System.out.println("URL : "+url);
-		url.replace(' ','+');
+		url=url.replace(' ','+');
 		HttpURLConnection con;
 		//StringBuiller is more suit for dynamic string
 		StringBuilder result=new StringBuilder();
@@ -89,6 +89,8 @@ public class WebProcess implements WebProcessSerivce{
 		html=replaceString(html, "action=\"\\/search", "action=\"/NVGoogle/google");
 		//logo
 		html=replaceString(html,"/images/branding/googlelogo/2x/googlelogo_color_120x44dp.png","/NVGoogle/Resources/google.png");
+		//small logo
+		html=replaceString(html,"/images/branding/product/ico/googleg_lodp.ico","/NVGoogle/Resources/googlelogo.ico");
 		return html;
 	}
 	
@@ -99,12 +101,14 @@ public class WebProcess implements WebProcessSerivce{
 	
 	
 	public static void main(String[] args) {
-		String url="https://www.baidu.com/s?wd=1&ie=utf-8";
+		String url="https://www.baidu.com/s?wd=1   &ie=utf-8";
 		WebProcess webs=new WebProcess();
 //		String html=webs.getHtmlByUrl(url);
 		String html="src=\"/images/branding/googlelogo/2x/googlelogo_color_120x44dp.png\"";
 		html=webs.replaceStringTest(html, "/images/branding/googlelogo/2x/googlelogo_color_120x44dp.png", "哈哈哈");
 		System.out.println("?");
+		url=url.replace(' ', '+');
+	System.out.println(url);
 	}
 	
 	public String replaceStringTest(String origin, String target, String replacement) {
