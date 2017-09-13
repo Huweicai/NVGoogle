@@ -1,22 +1,18 @@
 package hu;
 
 import java.io.*;
-import java.util.HashMap;
 import java.util.Map;
-import java.util.Map.Entry;
-
+import hu.service.*;
 import javax.servlet.http.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.servlet.ModelAndView;
 
 @Controller
 public class MyController {
 	//SpringMVC will auto inject a webprocessservice
 	@Autowired
-	hu.service.WebProcessSerivce webs;
+	WebProcessSerivce webs;
 	//Target URL
 	//String url="https://www.google.com/search?q=123&ie=utf-8&oe=utf-8&hl=zh-cn";
 	StringBuilder url=new StringBuilder("https://www.baidu.com/baidu?wd=123&oe=utf-8");
@@ -27,6 +23,8 @@ public class MyController {
 		//put Parameters into URL 
 		Map<String, String[]> requestParam=request.getParameterMap();
 		if(requestParam.get("wd")!=null) {
+			WebLog log=new WebLog(request, requestParam.get("wd")[0]);
+			log.run();
 			url=new StringBuilder("https://www.baidu.com/baidu?wd="+requestParam.get("wd")[0]+"&oe=utf-8");
 			if(requestParam.get("pn")!=null) {
 				url.append("&pn="+requestParam.get("pn")[0]);
@@ -54,6 +52,10 @@ public class MyController {
 		//put Parameters into URL wd
 		Map<String, String[]> requestParam=request.getParameterMap();
 		if(requestParam.get("q")!=null) {
+			//新建一个线程添加日志，避免因日志带来的网络延迟导致访问过慢
+			WebLog log=new WebLog(request, requestParam.get("q")[0]);
+			log.run();
+			//
 			urlgg=new StringBuilder("https://www.google.com/search?q="+requestParam.get("q")[0]+"&ie=utf-8&oe=utf-8&lr=lang_zh-CN");
 			if(requestParam.get("start")!=null) {
 				urlgg.append("&start="+requestParam.get("start")[0]);
