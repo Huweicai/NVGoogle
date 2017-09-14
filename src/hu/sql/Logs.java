@@ -52,6 +52,6 @@ public class Logs {
 	}
 	@Override
 	public String toString() {
-		return(id+" "+time+" "+ip+" "+location);
+		return(id+" "+time+" "+ip+" "+location+""+ua);
 	}
 }

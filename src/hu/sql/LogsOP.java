@@ -26,11 +26,13 @@ public class LogsOP  implements LogsOPface{
 		session.insert("addLogs", l);
 	}
 	
-	public void show() {
+	public String show() {
 		java.util.List<Logs> l=session.selectList("show");
+		StringBuilder sb=new StringBuilder("");
 		for(Logs s:l) {
-			System.out.println(s.toString());
+			sb.append(s.toString()+"/n");
 		}
+		return sb.toString();
 	}
 	
 	public void destroy() {
@@ -39,9 +41,8 @@ public class LogsOP  implements LogsOPface{
 	}
 	public static void main(String[] args) {
 		LogsOP op=new LogsOP();
-		Logs log=new Logs("a","b","c","d","e");
 		op.init();
-		op.addLogs(log);
+		op.show();
 		op.destroy();
 	}
 }

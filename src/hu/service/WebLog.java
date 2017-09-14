@@ -3,6 +3,7 @@ package hu.service;
 import java.io.InputStream;
 import java.net.URL;
 import java.net.URLConnection;
+import java.util.TimeZone;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -22,10 +23,10 @@ public class WebLog implements WebLogService,Runnable{
 	@Override
 	public String getTime() {
 		java.text.SimpleDateFormat formatter = new java.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		formatter.setTimeZone(TimeZone.getTimeZone("GMT+8"));
 		java.util.Date currentTime = new java.util.Date();
 		String date1 = formatter.format(currentTime); 
-		String date2 = currentTime.toString();
-		return date1+date2;
+		return date1;
 	}
 
 	@Override
@@ -77,5 +78,4 @@ public class WebLog implements WebLogService,Runnable{
 		logop.addLogs(makeLogs());
 		logop.destroy();
 	}
-
 }

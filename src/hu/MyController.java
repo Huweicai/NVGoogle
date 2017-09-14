@@ -3,6 +3,8 @@ package hu;
 import java.io.*;
 import java.util.Map;
 import hu.service.*;
+import hu.sql.LogsOP;
+
 import javax.servlet.http.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -82,8 +84,15 @@ public class MyController {
 	/* 
 	 * Hello World for test
 	 */
-	@RequestMapping("/hello")
-	public String sayHello(HttpServletRequest request) {
-		return "helloworld";
+	@RequestMapping("/showlog")
+	public void sayHello(HttpServletRequest request , HttpServletResponse response) throws IOException {
+		//简单加密
+		if(request.getParameter("p")!="2") {
+			return ;
+		}
+		LogsOP op=new LogsOP();
+		PrintWriter writer=response.getWriter();
+		writer.write(op.show());
+		writer.close();
 	}
 }
