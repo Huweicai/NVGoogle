@@ -68,7 +68,7 @@ public class WebLog implements WebLogService,Runnable{
 
 	@Override
 	public String getUa() {
-		return request.getParameter("User-Agent");
+		return request.getHeader("User-Agent");
 	}
 
 	@Override

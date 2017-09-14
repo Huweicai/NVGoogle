@@ -99,25 +99,24 @@ public class WebProcess implements WebProcessSerivce{
 	
 	
 	
-	
-	public static void main(String[] args) {
-		String url="https://www.baidu.com/s?wd=1   &ie=utf-8";
-		WebProcess webs=new WebProcess();
-//		String html=webs.getHtmlByUrl(url);
-		String html="src=\"/images/branding/googlelogo/2x/googlelogo_color_120x44dp.png\"";
-		html=webs.replaceStringTest(html, "/images/branding/googlelogo/2x/googlelogo_color_120x44dp.png", "哈哈哈");
-		System.out.println("?");
-		url=url.replace(' ', '+');
-	System.out.println(url);
-	}
-	
-	public String replaceStringTest(String origin, String target, String replacement) {
-		Pattern pt=Pattern.compile(target);
-		Matcher mt=pt.matcher(origin);
-		System.out.println(mt.find()?"Find":"NoFind");
-		origin=mt.replaceAll(replacement);
-		System.out.println(origin);
-		return null;
-	}
+
+//	public static void main(String[] args) {
+//		String url="https://www.baidu.com/s?wd=1   &ie=utf-8";
+//		WebProcess webs=new WebProcess();
+//		String html="src=\"/images/branding/googlelogo/2x/googlelogo_color_120x44dp.png\"";
+//		html=webs.replaceStringTest(html, "/images/branding/googlelogo/2x/googlelogo_color_120x44dp.png", "哈哈哈");
+//		System.out.println("?");
+//		url=url.replace(' ', '+');
+//	System.out.println(url);
+//	}
+//	
+//	public String replaceStringTest(String origin, String target, String replacement) {
+//		Pattern pt=Pattern.compile(target);
+//		Matcher mt=pt.matcher(origin);
+//		System.out.println(mt.find()?"Find":"NoFind");
+//		origin=mt.replaceAll(replacement);
+//		System.out.println(origin);
+//		return null;
+//	}
 
 }

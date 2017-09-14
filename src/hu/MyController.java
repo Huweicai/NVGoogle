@@ -21,6 +21,7 @@ public class MyController {
 	@RequestMapping(value="/baidu")
 	public void getURLContent(HttpServletRequest request,HttpServletResponse response) throws  IOException {
 		//put Parameters into URL 
+		System.out.println(request.getHeader("User-Agent"));
 		Map<String, String[]> requestParam=request.getParameterMap();
 		if(requestParam.get("wd")!=null) {
 			WebLog log=new WebLog(request, requestParam.get("wd")[0]);
@@ -55,7 +56,7 @@ public class MyController {
 			//新建一个线程添加日志，避免因日志带来的网络延迟导致访问过慢
 			WebLog log=new WebLog(request, requestParam.get("q")[0]);
 			log.run();
-			//
+			//0
 			urlgg=new StringBuilder("https://www.google.com/search?q="+requestParam.get("q")[0]+"&ie=utf-8&oe=utf-8&lr=lang_zh-CN");
 			if(requestParam.get("start")!=null) {
 				urlgg.append("&start="+requestParam.get("start")[0]);
